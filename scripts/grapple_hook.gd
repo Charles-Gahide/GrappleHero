@@ -9,7 +9,7 @@ extends Node2D
 @onready var line: Line2D = $Line2D
 
 
-var player: CharacterBody2D
+var player: Player
 var anchor: Vector2
 var rope_length := 0.0
 var active := false
@@ -44,10 +44,12 @@ func fire_grapple() -> void:	#subtract player position from the mouse postion to
 		
 func release_grapple() -> void:
 	if active:
-		momentum_time = 0.5
+		momentum_time = 0.4
 		player.velocity *= release_boost
 		if player.velocity.y < 0.0:
 			player.velocity.y *= vertical_boost
+		if abs(player.velocity.x) >= 200:
+			player.start_release_anim()
 	active = false
 	line.visible = false
 	
