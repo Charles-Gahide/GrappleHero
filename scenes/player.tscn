@@ -105,8 +105,6 @@ shape = SubResource("CircleShape2D_fjrip")
 position = Vector2(0, -15)
 script = ExtResource("1_qhqgy")
 
-[node name="RayCast2D" type="RayCast2D" parent="GrappleHook" unique_id=2134765380]
-
 [node name="Line2D" type="Line2D" parent="GrappleHook" unique_id=1063586775]
 position = Vector2(278.84998, 135.30002)
 scale = Vector2(2.65, 2.1)

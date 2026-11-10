@@ -8,11 +8,14 @@ const SPEED = 150.0
 const JUMP_VELOCITY = -300.0
 const COYOTE_TIME =0.1
 const LARGE_JUMP_TIME = 1
+const MAX_VELOCITY = 350
+const MAX_LEFT_VELOCITY = -350
 
 var coyote_timer := 0.0 
 var large_jump_timer := 0.0
 
 func _physics_process(delta: float) -> void:
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -52,6 +55,18 @@ func _physics_process(delta: float) -> void:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
-
+	
+	if velocity[0] > MAX_VELOCITY:
+		velocity[0] = MAX_VELOCITY
+		print(velocity)
+	if velocity[0] < MAX_LEFT_VELOCITY:
+		velocity[0] = MAX_LEFT_VELOCITY
+		print(velocity)
+		
+	if velocity[1] > MAX_VELOCITY:
+		velocity[1] = MAX_VELOCITY
+		print(velocity)
+#
+		
 	grapple.apply_constraint()
 	move_and_slide()
