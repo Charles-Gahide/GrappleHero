@@ -44,7 +44,7 @@ func fire_grapple() -> void:	#subtract player position from the mouse postion to
 		
 func release_grapple() -> void:
 	if active:
-		momentum_time = 0.4
+		momentum_time = 0.5
 		player.velocity *= release_boost
 		if player.velocity.y < 0.0:
 			player.velocity.y *= vertical_boost

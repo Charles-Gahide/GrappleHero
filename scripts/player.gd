@@ -10,6 +10,7 @@ const COYOTE_TIME =0.1
 const LARGE_JUMP_TIME = 1
 const MAX_VELOCITY = 350
 const MAX_LEFT_VELOCITY = -350
+const DECEL := 600.0
 
 var coyote_timer := 0.0 
 var large_jump_timer := 0.0
@@ -50,9 +51,11 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("ui_left", "ui_right")
 	if grapple.active or grapple.momentum_time > 0.0:
 		velocity.x += direction * SWING_FORCE * delta
-
 	elif direction:
-		velocity.x = direction * SPEED
+		if abs(velocity.x) > SPEED:
+			velocity.x = move_toward(velocity.x, direction * SPEED, DECEL * delta)
+		else:
+			velocity.x = direction * SPEED	
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
@@ -62,10 +65,10 @@ func _physics_process(delta: float) -> void:
 	if velocity[0] < MAX_LEFT_VELOCITY:
 		velocity[0] = MAX_LEFT_VELOCITY
 		print(velocity)
-		
 	if velocity[1] > MAX_VELOCITY:
 		velocity[1] = MAX_VELOCITY
 		print(velocity)
+		
 #
 		
 	grapple.apply_constraint()
