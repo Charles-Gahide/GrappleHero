@@ -1,9 +1,11 @@
 extends Node2D
 
-@export var max_distance := 150.0
+@export var max_distance := 130.0
 @export var release_boost := 1.1
 @export var vertical_boost := 1.5
 @export var aim_tolerance := 24.0
+@export var active := false
+
 
 @onready var ray: ShapeCast2D = $ShapeCast2D
 @onready var line: Line2D = $Line2D
@@ -12,7 +14,6 @@ extends Node2D
 var player: Player
 var anchor: Vector2
 var rope_length := 0.0
-var active := false
 var momentum_time := 0.0
 
 
@@ -39,6 +40,9 @@ func fire_grapple() -> void:	#subtract player position from the mouse postion to
 		var center := layer.to_global(layer.map_to_local(cell))
 		anchor = center + Vector2(0, layer.tile_set.tile_size.y / 2.0) #go to center, go down half a block size
 		rope_length = player.global_position.distance_to(anchor)
+		if rope_length > max_distance:
+			print("graple too far")
+			return
 		active = true
 		line.visible = true
 		
@@ -70,6 +74,8 @@ func apply_constraint() -> void:
 	
 		# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if not active and Input.is_action_pressed("grapple"):
+		fire_grapple()
 	momentum_time = max(momentum_time - delta, 0.0)
 	if active:
 		line.points = [line.to_local(global_position), line.to_local(anchor)]

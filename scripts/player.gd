@@ -25,6 +25,8 @@ func _physics_process(delta: float) -> void:
 	if abs(velocity.x) < 200 or is_on_floor():
 		fast_release = false
 
+	#if not grapple.active and Input.is_action_pressed("grapple"):
+		#grapple.fire_grapple()
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
